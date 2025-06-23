@@ -1,0 +1,77 @@
+import React, { useEffect, useState } from 'react';
+import axios from '../axios';
+import { useParams, useNavigate } from 'react-router-dom';
+
+const UpdateBook = () => {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const [book, setBook] = useState(null);
+  const [errors, setErrors] = useState({});
+
+  useEffect(() => {
+    axios.get(`/books/${id}`).then(res => setBook(res.data));
+  }, [id]);
+
+  const validate = () => {
+    const errs = {};
+    if (!book.title || book.title.trim().length < 2) errs.title = "Title is required (min 2 chars)";
+    if (!book.author || book.author.trim().length < 2) errs.author = "Author is required (min 2 chars)";
+    if (!book.isbn || !/^\d{10}(\d{3})?$/.test(book.isbn)) errs.isbn = "ISBN must be 10 or 13 digits";
+    if (!book.price || isNaN(book.price) || Number(book.price) <= 0) errs.price = "Price must be a positive number";
+    if (!book.stock || isNaN(book.stock) || !Number.isInteger(Number(book.stock)) || Number(book.stock) < 0) errs.stock = "Stock must be a non-negative integer";
+    return errs;
+  };
+
+  const handleChange = (e) => {
+    setBook({ ...book, [e.target.name]: e.target.value });
+    setErrors({ ...errors, [e.target.name]: undefined });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const errs = validate();
+    if (Object.keys(errs).length) {
+      setErrors(errs);
+      return;
+    }
+    axios.put(`/books/${id}`, book)
+      .then(() => {
+        alert('Book updated!');
+        navigate('/');
+      })
+      .catch(err => alert('Failed to update book!'));
+  };
+
+  if (!book) return <p>Loading...</p>;
+
+  return (
+    <div className="container form-section">
+      <h2>Update Book</h2>
+      <form onSubmit={handleSubmit} noValidate>
+        <label htmlFor="title">Title</label>
+        <input id="title" name="title" value={book.title} onChange={handleChange} required minLength={2} />
+        {errors.title && <span style={{color:'red', fontSize:'0.9em'}}>{errors.title}</span>}
+
+        <label htmlFor="author">Author</label>
+        <input id="author" name="author" value={book.author} onChange={handleChange} required minLength={2} />
+        {errors.author && <span style={{color:'red', fontSize:'0.9em'}}>{errors.author}</span>}
+
+        <label htmlFor="isbn">ISBN</label>
+        <input id="isbn" name="isbn" value={book.isbn} onChange={handleChange} required pattern="\d{10}(\d{3})?" />
+        {errors.isbn && <span style={{color:'red', fontSize:'0.9em'}}>{errors.isbn}</span>}
+
+        <label htmlFor="price">Price</label>
+        <input id="price" name="price" type="number" value={book.price} onChange={handleChange} required min="0.01" step="0.01" />
+        {errors.price && <span style={{color:'red', fontSize:'0.9em'}}>{errors.price}</span>}
+
+        <label htmlFor="stock">Stock</label>
+        <input id="stock" name="stock" type="number" value={book.stock} onChange={handleChange} required min="0" step="1" />
+        {errors.stock && <span style={{color:'red', fontSize:'0.9em'}}>{errors.stock}</span>}
+
+        <button className="btn btn-submit" type="submit">Update</button>
+      </form>
+    </div>
+  );
+};
+
+export default UpdateBook;
