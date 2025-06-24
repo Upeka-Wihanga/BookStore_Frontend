@@ -62,13 +62,8 @@ const BookList = () => {
 
       {/* Confirmation Modal */}
       {confirmBook && (
-        <div style={{
-          position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh',
-          background: 'rgba(0,0,0,0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000
-        }}>
-          <div style={{
-            background: '#fff', padding: 32, borderRadius: 10, minWidth: 320, boxShadow: '0 2px 16px rgba(0,0,0,0.18)'
-          }}>
+        <div className="confirm-modal">
+          <div className="confirm-modal-content">
             <h3 style={{color:'#e53e3e'}}>Are you sure you want to delete this book?</h3>
             <div style={{margin: '16px 0', color:'#2d3748'}}>
               <strong>Title:</strong> {confirmBook.title}<br />

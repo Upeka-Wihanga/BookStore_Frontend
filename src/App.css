@@ -50,25 +50,39 @@ body {
 }
 
 .header {
-  background: #2d3748;
+  background: linear-gradient(
+    90deg,
+    #3182ce 0%,
+    #2d3748 20%,
+    #2d3748 80%,
+    #3182ce 100%
+  );
   color: #fff;
   padding: 18px 0 12px 0;
   text-align: center;
   font-size: 2rem;
   letter-spacing: 2px;
   font-weight: 700;
-  margin-bottom: 0;
+  margin-bottom: 12px; /* Add this line */
   box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+.nav-wrapper {
+  background: #f1f5f9;
+  box-shadow: 0 2px 8px rgba(49,130,206,0.08);
+  border-bottom: 1.5px solid #e2e8f0;
+  padding: 0;
+  margin-top: 0; /* Ensure no negative margin */
 }
 
 nav {
   display: flex;
   justify-content: center;
   gap: 18px;
-  background: #f1f5f9;
-  padding: 12px 0 8px 0;
-  margin-bottom: 24px;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.03);
+  padding: 14px 0 10px 0;
+  background: none;
+  box-shadow: none;
+  margin-bottom: 0;
 }
 
 nav a {
@@ -112,6 +126,17 @@ h2 {
   justify-content: flex-start;
 }
 
+@media (max-width: 700px) {
+  .book-list {
+    flex-direction: column;
+    align-items: center;
+  }
+  .book-card {
+    width: 95vw;
+    max-width: 340px;
+  }
+}
+
 .book-card {
   background: #f1f5f9;
   border-radius: 10px;
@@ -121,11 +146,12 @@ h2 {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  transition: transform 0.15s;
+  transition: transform 0.15s, box-shadow 0.15s;
 }
 
 .book-card:hover {
-  transform: translateY(-2px) scale(1.02);
+  transform: translateY(-6px) scale(1.04);
+  box-shadow: 0 8px 24px rgba(49,130,206,0.13);
 }
 
 .book-title {
@@ -161,6 +187,10 @@ h2 {
   cursor: pointer;
   transition: background 0.2s;
   font-size: 0.98rem;
+}
+
+.btn:active {
+  transform: scale(0.97);
 }
 
 .btn-delete {
@@ -215,4 +245,21 @@ label {
 
 .btn-submit:hover {
   background: #2f855a;
+}
+
+/* Add to App.css */
+.confirm-modal {
+  position: fixed;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  background: rgba(0,0,0,0.3);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 1000;
+}
+.confirm-modal-content {
+  background: #fff;
+  padding: 32px 28px;
+  border-radius: 14px;
+  min-width: 320px;
+  box-shadow: 0 8px 32px rgba(49,130,206,0.18);
+  border: 1.5px solid #e2e8f0;
 }
