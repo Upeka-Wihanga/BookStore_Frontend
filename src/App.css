@@ -63,8 +63,9 @@ body {
   font-size: 2rem;
   letter-spacing: 2px;
   font-weight: 700;
-  margin-bottom: 12px; /* Add this line */
+  margin-bottom: 12px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  border-radius: 8px;
 }
 
 .nav-wrapper {
@@ -110,6 +111,7 @@ nav a:hover, nav a.active {
   border-radius: 14px;
   box-shadow: 0 2px 16px rgba(0,0,0,0.08);
   padding: 28px 24px 24px 24px;
+  color: #2d3748; /* <-- Add this line for dark text */
 }
 
 h2 {
@@ -137,21 +139,22 @@ h2 {
   }
 }
 
+/* Book card hover effect */
 .book-card {
   background: #f1f5f9;
-  border-radius: 10px;
-  box-shadow: 0 1px 8px rgba(0,0,0,0.06);
-  padding: 18px 14px;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(49,130,206,0.08);
+  padding: 20px;
   width: 240px;
+  min-height: 180px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  transition: transform 0.15s, box-shadow 0.15s;
+  transition: box-shadow 0.2s, transform 0.2s;
 }
-
 .book-card:hover {
-  transform: translateY(-6px) scale(1.04);
-  box-shadow: 0 8px 24px rgba(49,130,206,0.13);
+  box-shadow: 0 6px 24px rgba(49,130,206,0.18);
+  transform: translateY(-4px) scale(1.03);
 }
 
 .book-title {
@@ -262,4 +265,26 @@ label {
   min-width: 320px;
   box-shadow: 0 8px 32px rgba(49,130,206,0.18);
   border: 1.5px solid #e2e8f0;
+}
+
+/* Toast popup */
+.toast {
+  position: fixed;
+  top: 32px;
+  right: 32px;
+  background: #3182ce;
+  color: #fff;
+  padding: 14px 28px;
+  border-radius: 8px;
+  box-shadow: 0 2px 12px rgba(49,130,206,0.18);
+  font-size: 1rem;
+  z-index: 9999;
+  opacity: 0.97;
+  animation: fadeInOut 2.2s;
+}
+@keyframes fadeInOut {
+  0% { opacity: 0; transform: translateY(-16px);}
+  10% { opacity: 1; transform: translateY(0);}
+  90% { opacity: 1;}
+  100% { opacity: 0; transform: translateY(-16px);}
 }

@@ -1,25 +1,51 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, NavLink } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import './App.css';
-import BookList from './components/BookList';
-import AddBook from './components/AddBook';
-import UpdateBook from './components/UpdateBook';
+import LandingPage from './components/common/LandingPage';
+import AdminLogin from './components/admin/AdminLogin';
+import AdminDashboard from './components/admin/AdminDashboard';
+import BookList from './components/admin/BookList';
+import AddBook from './components/admin/AddBook';
+import UpdateBook from './components/admin/UpdateBook';
+import Store from './components/customer/Store';
+import Cart from './components/customer/Cart';
+import Wishlist from './components/customer/Wishlist';
+import CustomerRegister from './components/customer/CustomerRegister';
+import CustomerLogin from './components/customer/CustomerLogin';
+import AdminNav from './components/admin/AdminNav';
+
+function AdminNavWrapper() {
+  const location = useLocation();
+  // Show nav on all /admin routes except /admin/login
+  if (location.pathname.startsWith('/admin') && location.pathname !== '/admin/login') {
+    return <AdminNav />;
+  }
+  return null;
+}
 
 function App() {
   return (
     <>
       <div className="header">Book Store</div>
       <Router>
-        <div className="nav-wrapper">
-          <nav>
-            <NavLink to="/" end className={({ isActive }) => isActive ? 'active' : ''}>Books</NavLink>
-            <NavLink to="/add" className={({ isActive }) => isActive ? 'active' : ''}>Add Book</NavLink>
-          </nav>
-        </div>
+        <AdminNavWrapper />
         <Routes>
-          <Route path="/" element={<BookList />} />
-          <Route path="/add" element={<AddBook />} />
-          <Route path="/edit/:id" element={<UpdateBook />} />
+          {/* Landing page */}
+          <Route path="/" element={<LandingPage />} />
+
+          {/* Admin routes */}
+          <Route path="/admin/login" element={<AdminLogin />} />
+          <Route path="/admin/dashboard" element={<AdminDashboard />} />
+          <Route path="/admin/books" element={<BookList />} />
+          <Route path="/admin/add" element={<AddBook />} />
+          <Route path="/admin/edit/:id" element={<UpdateBook />} />
+
+          {/* Customer routes */}
+          <Route path="/customer/login" element={<CustomerLogin />} />
+          <Route path="/customer/store" element={<Store />} />
+          <Route path="/customer/cart" element={<Cart />} />
+          <Route path="/customer/wishlist" element={<Wishlist />} />
+          <Route path="/customer/register" element={<CustomerRegister />} />
         </Routes>
       </Router>
       <footer style={{

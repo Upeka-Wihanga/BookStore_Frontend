@@ -1,17 +1,16 @@
-import React, { useState } from 'react';
-import axios from '../axios';
+import React, { useEffect, useState } from 'react';
+import axios from '../../axios';
+import { useParams, useNavigate } from 'react-router-dom';
 
-const initialState = {
-  title: '',
-  author: '',
-  isbn: '',
-  price: '',
-  stock: '',
-};
-
-const AddBook = () => {
-  const [book, setBook] = useState(initialState);
+const UpdateBook = () => {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const [book, setBook] = useState(null);
   const [errors, setErrors] = useState({});
+
+  useEffect(() => {
+    axios.get(`/books/${id}`).then(res => setBook(res.data));
+  }, [id]);
 
   const validate = () => {
     const errs = {};
@@ -35,18 +34,19 @@ const AddBook = () => {
       setErrors(errs);
       return;
     }
-    axios.post('/books', book)
+    axios.put(`/books/${id}`, book)
       .then(() => {
-        alert('Book added!');
-        setBook(initialState);
-        setErrors({});
+        alert('Book updated!');
+        navigate('/admin/books');
       })
-      .catch(err => alert('Failed to add book!'));
+      .catch(err => alert('Failed to update book!'));
   };
+
+  if (!book) return <p>Loading...</p>;
 
   return (
     <div className="container form-section">
-      <h2>Add Book</h2>
+      <h2>Update Book</h2>
       <form onSubmit={handleSubmit} noValidate>
         <label htmlFor="title">Title</label>
         <input id="title" name="title" value={book.title} onChange={handleChange} required minLength={2} />
@@ -68,10 +68,10 @@ const AddBook = () => {
         <input id="stock" name="stock" type="number" value={book.stock} onChange={handleChange} required min="0" step="1" />
         {errors.stock && <span style={{color:'red', fontSize:'0.9em'}}>{errors.stock}</span>}
 
-        <button className="btn btn-submit" type="submit">Add</button>
+        <button className="btn btn-submit" type="submit">Update</button>
       </form>
     </div>
   );
 };
 
-export default AddBook;
+export default UpdateBook;
